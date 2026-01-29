@@ -72,7 +72,7 @@
             </form>
         </section>
 
-    
+
 
         <!-- Display Feedback -->
         {% if user_data.name %}
@@ -138,8 +138,8 @@
                     {% endif %}
                 </div>
 
-                      <!-- Card -->
-        
+                <!-- Card -->
+
                 <div
                     class="feedback-card {% if user_data.exercise_hours|float >= 2 %}feedback-success{% elif user_data.exercise_hours|float >= 1 %}feedback-warning{% else %}feedback-danger{% endif %}">
                     <h3>🏃‍♂️ Exercise Tracking</h3>
@@ -208,7 +208,7 @@
                                                 {{ exercise_score }}/30 • Baseline: 10/10</small></p>
                                     </div>
 
-                                    <!-- Paulo Updated Feedback Logic -->
+                                    <!-- Final Feedback Logic-->
                                     {% if total_score >= 85 %}
                                     <p>🌟 <strong>Outstanding!</strong> You're a health superstar with excellent habits!
                                     </p>
@@ -228,7 +228,7 @@
         </section>
         {% endif %}
 
-
+        <!-- Lab Completed 💪 -->
         <footer>
             <p>Built with Flask • CS 584 • Spring 2026 • Paulo Condori Pinedo</p>
         </footer>
