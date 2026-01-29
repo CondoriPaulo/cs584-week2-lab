@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Health Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
     <div class="container">
         <header>
@@ -19,26 +21,122 @@
                 <h2>Current Time</h2>
                 <p>{{ time }}</p>
             </div>
-            
+
             <div class="info-card">
                 <h2>Weekend Countdown</h2>
                 {% if days_to_weekend == 0 %}
-                    <p class="big-text">🎉</p>
-                    <p>It's the weekend!</p>
+                <p class="big-text">🎉</p>
+                <p>It's the weekend!</p>
                 {% else %}
-                    <p class="big-text">{{ days_to_weekend }}</p>
-                    <p>days until weekend</p>
+                <p class="big-text">{{ days_to_weekend }}</p>
+                <p>days until weekend</p>
                 {% endif %}
             </div>
         </div>
 
         <!-- TODO: Add form section here (see LAB_GUIDE.md Part 2) -->
+        <!-- Health Data Form -->
+        <section class="form-section">
+            <h2>Log Your Daily Health</h2>
+            <form action="/submit" method="POST" class="health-form">
+
+                <!-- Grid Container -->
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="name">Your Name:</label>
+                        <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="sleep_hours">Hours of Sleep:</label>
+                        <input type="number" id="sleep_hours" name="sleep_hours" placeholder="7.5" step="0.5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="water_intake">Glasses of Water</label>
+                        <input type="number" id="water_intake" name="water_intake"
+                            placeholder="Glasses of Water Consumed">
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Save</button>
+            </form>
+        </section>
+
 
         <!-- TODO: Add feedback section here (see LAB_GUIDE.md Part 4) -->
+        <!-- Display Feedback -->
+        <!--- {% if user_data.name %}
+        <section class="feedback-section">
+            <h2>Hello, {{ user_data.name }}! 👋</h2>
+            <p>You slept {{ user_data.sleep_hours }} hours.</p>
+            <p><strong>{{ user_data.feedback }}</strong></p>
+            <p><strong>Glasses of Water: {{ user_data.water_intake }}</strong></p>
+        </section>
+        {% endif %}
+    -->
+
+
+        <!-- Display Feedback -->
+        {% if user_data.name %}
+        <section class="feedback-section">
+            <h2>Hello, {{ user_data.name }}! 👋</h2>
+
+            <!-- Feedback Cards Container Adjustments -->
+            <div class="feedback-cards">
+
+                
+                <div
+                    class="feedback-card {% if user_data.sleep_hours|int >= 7 %}feedback-success{% elif user_data.sleep_hours|int >= 5 %}feedback-warning{% else %}feedback-danger{% endif %}">
+                    <h3>💤 Sleep Analysis</h3>
+                    <p>You slept <strong>{{ user_data.sleep_hours }} hours</strong></p>
+                    <p>{{ user_data.feedback }}</p>
+                </div>
+
+                <div
+                    class="feedback-card {% if user_data.water_intake|int >= 8 %}feedback-success{% elif user_data.water_intake|int >= 4 %}feedback-warning{% else %}feedback-danger{% endif %}">
+                    <h3>💧 Hydration Status</h3>
+                    <p>You drank <strong>{{ user_data.water_intake }} glasses</strong> of water</p>
+                    {% if user_data.water_intake|int >= 8 %}
+                    <p>🎉 Great hydration! You're well hydrated.</p>
+                    {% elif user_data.water_intake|int >= 4 %}
+                    <p>⚠️ Good start! Try to drink 2-4 more glasses.</p>
+                    {% else %}
+                    <p>🚨 Low hydration! Aim for 8 glasses daily.</p>
+                    {% endif %}
+                </div>
+
+
+                <div class="feedback-card feedback-score">
+                    <h3>📊 Daily Health Score</h3>
+                    {% set sleep_score = 40 if user_data.sleep_hours|int >= 7 else (20 if user_data.sleep_hours|int >= 5
+                    else 10) %}
+                    {% set water_score = 40 if user_data.water_intake|int >= 8 else (20 if user_data.water_intake|int >=
+                    4 else 10) %}
+                    {% set total_score = sleep_score + water_score + 20 %}
+
+                    <p class="score-display">
+                        <span class="score-number">{{ total_score }}</span>
+                        <span class="score-max">/100</span>
+                    </p>
+
+                    {% if total_score >= 80 %}
+                    <p>🌟 Excellent! You're crushing your health goals!</p>
+                    {% elif total_score >= 60 %}
+                    <p>✅ Good job! Room for small improvements.</p>
+                    {% else %}
+                    <p>💪 Keep working on your health habits!</p>
+                    {% endif %}
+                </div>
+
+            </div>
+        </section>
+        {% endif %}
 
         <footer>
             <p>Built with Flask • CS 584 • Spring 2026</p>
         </footer>
     </div>
 </body>
+
 </html>

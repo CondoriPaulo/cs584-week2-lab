@@ -6,7 +6,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #012169 0%, #4F81BD 100%);
     min-height: 100vh;
     padding: 20px;
 }
@@ -39,12 +39,12 @@ body {
 }
 
 .nav-link:hover {
-    background: #e0e0e0;
-    color: #667eea;
+    background: #F2A900;
+    color: white;
 }
 
 .nav-link.active {
-    background: #667eea;
+    background: #012169;
     color: white;
 }
 
@@ -59,7 +59,7 @@ body {
 
 /* Header */
 header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #012169 0%, #4F81BD 100%);
     color: white;
     padding: 40px;
     text-align: center;
@@ -99,7 +99,7 @@ header h1 {
 }
 
 .info-card h2 {
-    color: #667eea;
+    color: #012169;
     margin-bottom: 15px;
     font-size: 1.3em;
 }
@@ -138,7 +138,7 @@ header h1 {
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #F2A900;
 }
 
 
@@ -156,6 +156,73 @@ header h1 {
     color: #333;
     margin-bottom: 10px;
     font-size: 1.8em;
+}
+
+
+/* Part 4 of Lab 2 Assignment*/
+
+feedback-section {
+    padding: 40px;
+    background: #f8f9fa;
+}
+
+.feedback-section h2 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.feedback-section p {
+    color: #555;
+    font-size: 1.1em;
+    margin: 10px 0;
+}
+
+
+/* This was added CSS Styling from Lab Assignment Part 2*/
+
+.form-section {
+    padding: 40px;
+}
+
+/* CSS Grid Layout for Forms */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #F2A900 0%, #FFD700 100%);
+    color: #012169;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
 }
 
 .user-info {
@@ -243,6 +310,43 @@ header h1 {
     font-size: 1.1em;
     line-height: 1.6;
 }
+
+
+/* Hovering Effects */
+
+/* Feedback section hover */
+.feedback-section:hover {
+    background: linear-gradient(135deg, #FFF9E6 0%, #f8f9fa 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(242, 169, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* Feedback title hover */
+.feedback-section h2:hover {
+    color: #F2A900;
+    transform: scale(1.02);
+    transition: all 0.3s ease;
+}
+
+/* Feedback paragraphs hover */
+.feedback-section p:hover {
+    color: #012169;
+    background: rgba(242, 169, 0, 0.1);
+    padding: 8px 12px;
+    border-radius: 6px;
+    transform: translateX(5px);
+    transition: all 0.3s ease;
+}
+
+/* Bold text hover */
+.feedback-section strong:hover {
+    color: #F2A900;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+
 
 /* About Page Styles */
 .about-section {
