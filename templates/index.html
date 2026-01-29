@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
+<!-- I attempted to make it match Emory Colors -->
+
 <body>
     <div class="container">
         <header>
@@ -57,25 +59,20 @@
                         <input type="number" id="water_intake" name="water_intake"
                             placeholder="Glasses of Water Consumed">
                     </div>
+
+                    <!-- Excercise hours-->
+                    <div class="form-group">
+                        <label for="exercise_hours">Hours of Exercise:</label>
+                        <input type="number" id="exercise_hours" name="exercise_hours" placeholder="1.5" step="0.5"
+                            min="0">
+                    </div>
                 </div>
 
                 <button type="submit" class="submit-btn">Save</button>
             </form>
         </section>
 
-
-        <!-- TODO: Add feedback section here (see LAB_GUIDE.md Part 4) -->
-        <!-- Display Feedback -->
-        <!--- {% if user_data.name %}
-        <section class="feedback-section">
-            <h2>Hello, {{ user_data.name }}! 👋</h2>
-            <p>You slept {{ user_data.sleep_hours }} hours.</p>
-            <p><strong>{{ user_data.feedback }}</strong></p>
-            <p><strong>Glasses of Water: {{ user_data.water_intake }}</strong></p>
-        </section>
-        {% endif %}
-    -->
-
+    
 
         <!-- Display Feedback -->
         {% if user_data.name %}
@@ -85,56 +82,155 @@
             <!-- Feedback Cards Container Adjustments -->
             <div class="feedback-cards">
 
-                
+                <!-- Card -->
                 <div
-                    class="feedback-card {% if user_data.sleep_hours|int >= 7 %}feedback-success{% elif user_data.sleep_hours|int >= 5 %}feedback-warning{% else %}feedback-danger{% endif %}">
-                    <h3>💤 Sleep Analysis</h3>
+                    class="feedback-card {% if user_data.sleep_hours|float >= 7 and user_data.sleep_hours|float <= 9 %}feedback-success{% elif user_data.sleep_hours|float >= 5 %}feedback-warning{% else %}feedback-danger{% endif %}">
+                    <h3>💤 Enhanced Sleep Analysis</h3>
                     <p>You slept <strong>{{ user_data.sleep_hours }} hours</strong></p>
-                    <p>{{ user_data.feedback }}</p>
+
+                    <!-- Better Sleep Feedback Logic -->
+                    {% set hours = user_data.sleep_hours|float %}
+                    {% if hours < 4 %} <p>🚨 <strong>Critical:</strong> Dangerously low sleep! This seriously impacts
+                        health and cognitive function.</p>
+                        {% elif hours < 5 %} <p>😴 <strong>Very Poor:</strong> You're running on fumes! Your body needs
+                            much more rest for optimal function.</p>
+                            {% elif hours < 6 %} <p>⚠️ <strong>Poor:</strong> Not enough sleep. You may experience
+                                reduced focus and weakened immunity.</p>
+                                {% elif hours < 7 %} <p>😐 <strong>Below Optimal:</strong> Close but could use more
+                                    rest. Most adults need 7-9 hours.</p>
+                                    {% elif hours <= 9 %} <p>✅ <strong>Excellent:</strong> Perfect sleep duration!
+                                        You're in the optimal range for adult health.</p>
+                                        {% elif hours <= 10 %} <p>😊 <strong>Good but High:</strong> Slightly more than
+                                            optimal, but fine if you feel rested.</p>
+                                            {% else %}
+                                            <p>🤔 <strong>Very High:</strong> 10+ hours may indicate underlying issues.
+                                                Consider consulting healthcare.</p>
+                                            {% endif %}
                 </div>
+
+                <!-- Card -->
 
                 <div
-                    class="feedback-card {% if user_data.water_intake|int >= 8 %}feedback-success{% elif user_data.water_intake|int >= 4 %}feedback-warning{% else %}feedback-danger{% endif %}">
-                    <h3>💧 Hydration Status</h3>
+                    class="feedback-card {% if user_data.water_intake|int >= 8 %}feedback-success{% elif user_data.water_intake|int >= 6 %}feedback-warning{% else %}feedback-danger{% endif %}">
+                    <h3>💧 Smart Hydration Analysis</h3>
                     <p>You drank <strong>{{ user_data.water_intake }} glasses</strong> of water</p>
-                    {% if user_data.water_intake|int >= 8 %}
-                    <p>🎉 Great hydration! You're well hydrated.</p>
-                    {% elif user_data.water_intake|int >= 4 %}
-                    <p>⚠️ Good start! Try to drink 2-4 more glasses.</p>
+
+                    <!-- Better Water Feedback Logic -->
+                    {% set glasses = user_data.water_intake|int %}
+                    {% set target = 8 %} <!-- Base target, could be dynamic later -->
+                    {% set percentage = (glasses / target * 100)|int %}
+
+                    {% if glasses >= target %}
+                    <p>🎉 <strong>Excellent hydration!</strong> You've reached {{ percentage }}% of your daily water
+                        needs. Keep it up!</p>
+                    {% elif glasses >= 6 %}
+                    <p>✅ <strong>Good hydration!</strong> You're at {{ percentage }}% of target. Try {{ target - glasses
+                        }} more glasses today.</p>
+                    {% elif glasses >= 4 %}
+                    <p>⚠️ <strong>Moderate hydration.</strong> Only {{ percentage }}% of daily needs. You need {{ target
+                        - glasses }} more glasses.</p>
+                    {% elif glasses >= 2 %}
+                    <p>😐 <strong>Low hydration!</strong> Critical - only {{ percentage }}% of needs. Drink {{ target -
+                        glasses }} more glasses!</p>
                     {% else %}
-                    <p>🚨 Low hydration! Aim for 8 glasses daily.</p>
+                    <p>🚨 <strong>Very low hydration!</strong> Dangerously low at {{ percentage }}% of needs. Hydrate
+                        immediately!</p>
                     {% endif %}
                 </div>
 
+                      <!-- Card -->
+        
+                <div
+                    class="feedback-card {% if user_data.exercise_hours|float >= 2 %}feedback-success{% elif user_data.exercise_hours|float >= 1 %}feedback-warning{% else %}feedback-danger{% endif %}">
+                    <h3>🏃‍♂️ Exercise Tracking</h3>
+                    <p>You exercised for <strong>{{ user_data.exercise_hours or '0' }} hours</strong> today</p>
 
+                    <!-- Exercise Feedback Logic -->
+                    {% set exercise = user_data.exercise_hours|float if user_data.exercise_hours else 0 %}
+                    {% if exercise == 0 %}
+                    <p>😴 <strong>Really bad!</strong> Your body needs movement. Even 30 minutes makes a huge
+                        difference!</p>
+                    {% elif exercise >= 0.5 and exercise < 1 %} <p>👍 <strong>Getting Started:</strong> Good start! Try
+                        to reach at least 1 hour for better health benefits.</p>
+                        {% elif exercise >= 1 and exercise < 2 %} <p>✅ <strong>Good, keep it up!</strong> You're meeting
+                            basic exercise recommendations!</p>
+                            {% elif exercise >= 2 %}
+                            <p>🌟 <strong>Great job!</strong> You're exceeding recommendations and doing amazing for
+                                your fitness!</p>
+                            {% endif %}
+                </div>
+
+
+                <!-- Card -->
+
+                <!-- Enhanced Health Score Card -->
                 <div class="feedback-card feedback-score">
-                    <h3>📊 Daily Health Score</h3>
-                    {% set sleep_score = 40 if user_data.sleep_hours|int >= 7 else (20 if user_data.sleep_hours|int >= 5
-                    else 10) %}
-                    {% set water_score = 40 if user_data.water_intake|int >= 8 else (20 if user_data.water_intake|int >=
-                    4 else 10) %}
-                    {% set total_score = sleep_score + water_score + 20 %}
+                    <h3>📊 Advanced Health Score</h3>
 
-                    <p class="score-display">
-                        <span class="score-number">{{ total_score }}</span>
-                        <span class="score-max">/100</span>
-                    </p>
+                    {% set hours = user_data.sleep_hours|float %}
+                    {% if hours >= 7 and hours <= 9 %} {% set sleep_score=30 %} {% elif hours>= 6 and hours < 7 %} {%
+                            set sleep_score=25 %} {% elif hours>= 5 and hours < 6 %} {% set sleep_score=15 %} {% elif
+                                hours>= 4 and hours < 5 %} {% set sleep_score=8 %} {% else %} {% set sleep_score=3 %} {%
+                                    endif %} {% set glasses=user_data.water_intake|int %} {% if glasses>= 8 %}
+                                    {% set water_score = 30 %}
+                                    {% elif glasses >= 6 %}
+                                    {% set water_score = 25 %}
+                                    {% elif glasses >= 4 %}
+                                    {% set water_score = 15 %}
+                                    {% elif glasses >= 2 %}
+                                    {% set water_score = 8 %}
+                                    {% else %}
+                                    {% set water_score = 3 %}
+                                    {% endif %}
 
-                    {% if total_score >= 80 %}
-                    <p>🌟 Excellent! You're crushing your health goals!</p>
-                    {% elif total_score >= 60 %}
-                    <p>✅ Good job! Room for small improvements.</p>
-                    {% else %}
-                    <p>💪 Keep working on your health habits!</p>
-                    {% endif %}
+                                    <!-- Exercise Scoring -->
+                                    {% set exercise = user_data.exercise_hours|float if user_data.exercise_hours else 0
+                                    %}
+                                    {% if exercise >= 2 %}
+                                    {% set exercise_score = 30 %}
+                                    {% elif exercise >= 1 %}
+                                    {% set exercise_score = 20 %}
+                                    {% elif exercise >= 0.5 %}
+                                    {% set exercise_score = 10 %}
+                                    {% else %}
+                                    {% set exercise_score = 0 %}
+                                    {% endif %}
+
+                                    {% set total_score = sleep_score + water_score + exercise_score + 10 %}
+
+                                    <p class="score-display">
+                                        <span class="score-number">{{ total_score }}</span>
+                                        <span class="score-max">/100</span>
+                                    </p>
+
+                                    <div class="score-breakdown">
+                                        <p><small>Sleep: {{ sleep_score }}/30 • Water: {{ water_score }}/30 • Exercise:
+                                                {{ exercise_score }}/30 • Baseline: 10/10</small></p>
+                                    </div>
+
+                                    <!-- Paulo Updated Feedback Logic -->
+                                    {% if total_score >= 85 %}
+                                    <p>🌟 <strong>Outstanding!</strong> You're a health superstar with excellent habits!
+                                    </p>
+                                    {% elif total_score >= 70 %}
+                                    <p>✅ <strong>Great job!</strong> You're maintaining solid health practices.</p>
+                                    {% elif total_score >= 55 %}
+                                    <p>😊 <strong>Good foundation!</strong> Some areas could use improvement.</p>
+                                    {% elif total_score >= 40 %}
+                                    <p>💪 <strong>Room for growth!</strong> Small changes can make a big difference.</p>
+                                    {% else %}
+                                    <p>🔄 <strong>Health reset needed!</strong> Focus on basic sleep, hydration, and
+                                        movement!</p>
+                                    {% endif %}
                 </div>
 
             </div>
         </section>
         {% endif %}
 
+
         <footer>
-            <p>Built with Flask • CS 584 • Spring 2026</p>
+            <p>Built with Flask • CS 584 • Spring 2026 • Paulo Condori Pinedo</p>
         </footer>
     </div>
 </body>

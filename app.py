@@ -35,13 +35,16 @@ def submit():
     name = request.form.get('name', '')
     sleep_hours = request.form.get('sleep_hours', '')
     water_intake = request.form.get('water_intake', '')
-     
+    exercise_hours = request.form.get('exercise_hours', '')
+    
+    
     # Store it
     user_data['name'] = name
     user_data['sleep_hours'] = sleep_hours
 
     # Water Data
     user_data['water_intake'] = water_intake
+    user_data['exercise_hours'] = exercise_hours
     
     # Generate feedback
     try:
