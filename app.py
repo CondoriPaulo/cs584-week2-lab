@@ -8,7 +8,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-# In-memory storage for user data (we'll add to this during the lab!)
+
 user_data = {}
 
 
@@ -22,10 +22,9 @@ def index():
     return render_template('index.html', 
                          time=current_time, 
                          days_to_weekend=days_to_weekend,
-                         user_data=user_data,) # < - NEW!
+                         user_data=user_data,)
 
 
-# TODO: Add /submit route here (see LAB_GUIDE.md Part 3)
 
 @app.route('/submit', methods=['POST'])
 
@@ -44,21 +43,41 @@ def submit():
 
     # Water Data
     user_data['water_intake'] = water_intake
+
+    # Excercise Data
     user_data['exercise_hours'] = exercise_hours
     
-    # Generate feedback
+    # Sleep feedback
     try:
         hours = float(sleep_hours)
         if hours < 7:
-            user_data['feedback'] = "⚠️ Try to get more sleep!"
+            user_data['sleep_feedback'] = "⚠️ Try to get more sleep!"
         else:
-            user_data['feedback'] = "✅ Great sleep!"
+            user_data['sleep_feedback'] = "✅ Great sleep!"
     except ValueError:
-        user_data['feedback'] = "Please enter valid hours."
+        user_data['sleep_feedback'] = "Please enter valid hours."
     
-    print("DEBUG - Data stored:", user_data) # <-- Show your collected variable in terminal.
-    # ... it's being stored as an in-memory Python dict... it's not going to an API or database yet! 
-    # We'll work on that in a future lecture.
+    # Water feedback
+    try:
+        glasses = int(water_intake) if water_intake else 0
+        if glasses < 8:
+            user_data['water_feedback'] = "💧 Try to drink more water!"
+        else:
+            user_data['water_feedback'] = "✅ Great hydration!"
+    except ValueError:
+        user_data['water_feedback'] = "Please enter valid water amount."
+    
+    # Exercise feedback
+    try:
+        exercise = float(exercise_hours) if exercise_hours else 0
+        if exercise < 1:
+            user_data['exercise_feedback'] = "🏃‍♂️ Try to exercise more!"
+        else:
+            user_data['exercise_feedback'] = "✅ Great workout!"
+    except ValueError:
+        user_data['exercise_feedback'] = "Please enter valid exercise hours."
+    
+    print("DEBUG - Data stored:", user_data) 
 
     # Redirect back to home
     return redirect(url_for('index'))
